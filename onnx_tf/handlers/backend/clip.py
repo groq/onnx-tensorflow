@@ -26,8 +26,8 @@ class Cast(BackendHandler):
   @classmethod
   def version_6(cls, node, **kwargs):
     return cls._common(node, **kwargs)
-  @classmethod
 
+  @classmethod
   def version_11(cls, node, **kwargs):
     tensor_dict = kwargs["tensor_dict"]
     x = tensor_dict[node.inputs[0]]
