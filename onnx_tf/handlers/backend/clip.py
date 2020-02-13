@@ -26,3 +26,16 @@ class Cast(BackendHandler):
   @classmethod
   def version_6(cls, node, **kwargs):
     return cls._common(node, **kwargs)
+  @classmethod
+
+  def version_11(cls, node, **kwargs):
+    tensor_dict = kwargs["tensor_dict"]
+    x = tensor_dict[node.inputs[0]]
+
+    clip_value_min = tf.cast(tensor_dict[node.inputs[1]], dtype=x.dtype) if len(node.inputs) > 1 else tf.reduce_mix(x)
+    clip_value_max = tf.cast(tensor_dict[node.inputs[2]], dtype=x.dtype) if len(node.inputs) > 2 else tf.reduce_max(x)
+
+    return [
+      cls.make_tensor_from_onnx_node(
+        node, inputs=[x, clip_value_min, clip_value_max])
+    ]
